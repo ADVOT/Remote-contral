@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>连接到 DSH</title><link rel="stylesheet" href="/__dsh_connect/style.css"><script src="/__dsh_connect/pair.js" defer></script></head>
+<body class="pair-page"><main class="pair-form"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="2" y="4" width="13" height="10" rx="2"/><path d="M5 18h7m-3.5-4v4"/><rect x="15" y="10" width="7" height="12" rx="2"/></svg><h1>接着做。</h1><p>连接你的电脑，继续 DSH 里的任务。</p>
+<div id="session" class="session" hidden><p id="session-text" role="status"></p><div class="actions"><a href="/" target="_top">返回 DSH</a><button type="button" id="logout">退出此设备</button></div></div>
+<div class="auth-modes" role="group" aria-label="登录方式"><button type="button" data-mode="login" aria-pressed="true">账号登录</button><button type="button" data-mode="register" aria-pressed="false">注册账号</button><button type="button" data-mode="pair" aria-pressed="false">配对码</button></div>
+<p id="mode-help" class="subtle">换了 Wi-Fi 或 Tailscale 地址？使用同一个账号登录。</p>
+<form id="pair-form">
+<div id="account-fields"><label for="username">账号</label><input id="username" name="username" minlength="3" maxlength="32" pattern="[a-zA-Z0-9][a-zA-Z0-9_.-]{2,31}" placeholder="3–32 位字母、数字或 . _ -" autocomplete="username" autocapitalize="none" spellcheck="false" required><label for="password">密码</label><input id="password" name="password" type="password" minlength="12" maxlength="128" placeholder="至少 12 个字符" autocomplete="current-password" required></div>
+<div id="confirm-field" hidden><label for="confirm">再次输入密码</label><input id="confirm" name="confirm" type="password" minlength="12" maxlength="128" autocomplete="new-password" disabled></div>
+<label for="name">这台设备的名称</label><input id="name" name="name" maxlength="60" placeholder="例如：我的手机" autocomplete="off" value="我的设备" required>
+<div id="code-field" hidden><label for="code">一次性配对码</label><input id="code" name="code" class="code-input" inputmode="numeric" pattern="[0-9\s-]{9,15}" maxlength="15" placeholder="000 000 000" autocomplete="one-time-code" disabled><p class="subtle">在电脑的 DSH → 连接 → 添加设备中查看。</p></div>
+<div id="error" class="error" role="alert" hidden></div><button type="submit" class="primary" id="submit">登录并进入 DSH</button></form>
+<footer>账号保存在这台电脑。连接后可查看会话、发送任务和处理审批。忘记密码时，可在电脑上撤销账号后重新注册。</footer></main></body></html>

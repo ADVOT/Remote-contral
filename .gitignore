@@ -1,0 +1,38 @@
+# Local dependencies and generated artifacts
+node_modules/
+coverage/
+work/
+outputs/
+*.zip
+*.log
+*.tmp
+
+# Runtime credentials, state, backups and local environment
+.dsh/
+**/state.json
+**/connection-state.json
+dsh-connect-backups/
+*.bak
+*.backup*
+*.before-disable-*
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Screenshots may contain private IPs, paths or conversation content
+*.png
+*.jpg
+*.jpeg
+*.webp
+
+# Local tooling and OS files
+.impeccable/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

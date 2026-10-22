@@ -1,0 +1,8 @@
+- insert:
+    - id: dsh-connect
+      name: '@local/dsh-connect'
+      config:
+        port: 3940
+        pairingSeconds: 600
+        deviceDays: 30
+        maxDevices: 16

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DSH 连接</title><link rel="stylesheet" href="/dsh-connect/style.css"><script src="/dsh-connect/admin.js" defer></script></head>
+<body><main class="console">
+  <header><div><h1>连接</h1><p>让另一台设备，接上这台电脑的工作。</p></div><span class="status" id="status" role="status">正在读取</span></header>
+  <nav aria-label="连接方式"><span class="selected">控制此电脑</span><a href="#networks">局域网 / Tailscale</a></nav>
+  <div id="error" class="error" role="alert" hidden></div>
+  <section id="networks"><div class="section-head"><h2>连接网络</h2><span id="hostname" class="subtle"></span></div>
+    <p>选择远端设备能够访问的地址。跨网络使用时，两台设备都需连入同一个 Tailscale 网络。</p>
+    <p id="network-notice" class="subtle" role="status" hidden></p>
+    <div class="network-list" id="networks-list"></div>
+    <div class="actions"><button id="start" class="primary" disabled>开启连接</button><button id="stop" hidden>关闭连接</button><span id="transport" class="subtle"></span></div>
+    <div class="addresses" id="addresses" hidden></div>
+  </section>
+  <section><div class="section-head"><h2>可控制此电脑的设备</h2><button id="add" disabled>添加设备</button></div>
+    <div id="pairing" class="pairing" hidden><div><h3>在另一台设备上打开连接地址</h3><p>输入下方一次性配对码。每个配对码只能添加一台设备。</p></div><div class="code-row"><strong id="code"></strong><span id="expires" class="subtle"></span><button id="cancel">取消</button></div></div>
+    <div id="devices" class="devices"><p class="empty">尚未添加设备。开启连接后，添加你的手机或另一台电脑。</p></div>
+  </section>
+  <section><div class="section-head"><h2>连接账号</h2></div><p>在远端的“注册账号”中设置。已有账号可跨 Wi-Fi 和 Tailscale 地址登录；撤销账号会断开它的全部设备。</p><div id="accounts" class="devices"></div></section>
+  <footer>任务和文件操作始终在这台电脑执行。配对设备拥有与你相同的 DSH 操作权限；撤销访问会断开连接，已开始的任务仍继续运行。</footer>
+</main></body></html>
