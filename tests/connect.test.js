@@ -5,7 +5,25 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { once } from 'node:events';
-import { ConnectServer } from '../server.js';
+import { ConnectServer, interfaces } from '../server.js';
+
+test('network discovery labels Radmin without treating arbitrary 26.x or virtual adapters as Radmin', () => {
+  const ipv4 = address => ({ address, family: 'IPv4', internal: false });
+  const discovered = interfaces({
+    'Radmin VPN': [ipv4('26.0.0.10'), { address: 'fe80::1', family: 'IPv6', internal: false }],
+    'Famatech VPN': [ipv4('26.0.0.11')],
+    Tailscale: [ipv4('100.64.0.10')],
+    WLAN: [ipv4('192.0.2.10')],
+    'VMware Network Adapter': [ipv4('192.0.2.20')],
+    Ethernet: [ipv4('26.0.0.30')],
+    Offline: [ipv4('169.254.0.10')],
+    Loopback: [{ ...ipv4('127.0.0.1'), internal: true }],
+  });
+  assert.deepEqual(discovered.map(({ name, kind }) => [name, kind]), [
+    ['Radmin VPN', 'radmin'], ['Famatech VPN', 'radmin'], ['Tailscale', 'tailscale'],
+    ['WLAN', 'lan'], ['VMware Network Adapter', 'virtual'], ['Ethernet', 'lan'],
+  ]);
+});
 
 const listen = server => new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 test('paired HTTP/stream/WebSocket access, origin fences, persistence, and revocation', async t => {

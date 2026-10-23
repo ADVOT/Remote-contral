@@ -24,10 +24,10 @@ export function isLoopback(ip = '') {
   return ip === '::1' || /^127\./.test(ip) || /^::ffff:127\./i.test(ip);
 }
 
-export function interfaces() {
-  return Object.entries(os.networkInterfaces()).flatMap(([name, rows]) => (rows ?? [])
+export function interfaces(networks = os.networkInterfaces()) {
+  return Object.entries(networks).flatMap(([name, rows]) => (rows ?? [])
     .filter(row => row.family === 'IPv4' && !row.internal && !row.address.startsWith('169.254.'))
-    .map(row => ({ name, address: row.address, kind: /^100\./.test(row.address) && Number(row.address.split('.')[1]) >= 64 && Number(row.address.split('.')[1]) <= 127 ? 'tailscale' : /VMware|vEthernet|VirtualBox/i.test(name) ? 'virtual' : 'lan' })));
+    .map(row => ({ name, address: row.address, kind: /Radmin|Famatech/i.test(name) ? 'radmin' : /^100\./.test(row.address) && Number(row.address.split('.')[1]) >= 64 && Number(row.address.split('.')[1]) <= 127 ? 'tailscale' : /VMware|vEthernet|VirtualBox/i.test(name) ? 'virtual' : 'lan' })));
 }
 
 export function json(res, code, value, extra = {}) {

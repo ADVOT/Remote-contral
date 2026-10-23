@@ -10,7 +10,7 @@ function render() {
   const needsCode = mode === 'pair' || (register && !status.paired);
   $('code-field').hidden = !needsCode; $('code').disabled = !needsCode; $('code').required = needsCode;
   $('password').autocomplete = register ? 'new-password' : 'current-password';
-  $('mode-help').textContent = register ? status.paired ? '这台设备已配对，可以直接设置账号，之后跨地址登录。' : '首次注册需要电脑上的配对码。之后更换地址只需账号密码。' : mode === 'pair' ? '只配对这台设备。想跨地址登录，可选择注册账号。' : '换了 Wi-Fi 或 Tailscale 地址？使用同一个账号登录。';
+  $('mode-help').textContent = register ? status.paired ? '这台设备已配对，可以直接设置账号，之后跨地址登录。' : '首次注册需要电脑上的配对码。之后更换地址只需账号密码。' : mode === 'pair' ? '只配对这台设备。想跨地址登录，可选择注册账号。' : '换了 Wi-Fi、Tailscale 或 Radmin VPN 地址？使用同一个账号登录。';
   submit.textContent = titles[mode];
   for (const button of document.querySelectorAll('[data-mode]')) {
     button.setAttribute('aria-pressed', String(button.dataset.mode === mode));

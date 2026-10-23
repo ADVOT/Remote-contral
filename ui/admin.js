@@ -12,9 +12,9 @@ function time(value) { return new Date(value).toLocaleString('zh-CN', { month: '
 function render() {
   $('status').textContent = state.running ? '连接已开启' : '连接已关闭';
   $('hostname').textContent = state.hostname;
-  $('transport').textContent = state.tls ? 'HTTPS 加密连接' : 'HTTP · 跨网络请使用 Tailscale 加密通道';
+  $('transport').textContent = state.tls ? 'HTTPS 加密连接' : 'HTTP · 跨网络请使用 Tailscale 或 Radmin VPN 加密通道';
   if (!initialized) {
-    selected = new Set(state.addresses.length ? state.addresses : state.interfaces.filter(x => x.kind === 'tailscale' || (x.kind === 'lan' && /Wi-Fi|WLAN|无线|Ethernet|以太网/i.test(x.name))).map(x => x.address));
+    selected = new Set(state.addresses.length ? state.addresses : state.interfaces.filter(x => ['tailscale', 'radmin'].includes(x.kind) || (x.kind === 'lan' && /Wi-Fi|WLAN|无线|Ethernet|以太网/i.test(x.name))).map(x => x.address));
     initialized = true;
   }
   const available = new Set(state.interfaces.map(row => row.address));
@@ -22,16 +22,16 @@ function render() {
   selected = new Set([...selected].filter(address => available.has(address)));
   const unavailable = state.addresses.filter(address => !available.has(address));
   $('network-notice').hidden = !unavailable.length;
-  $('network-notice').textContent = unavailable.length ? `上次使用的地址 ${unavailable.join('、')} 当前不可用。请选择下方在线网卡；Tailscale 上线后会自动出现在列表中。` : '';
+  $('network-notice').textContent = unavailable.length ? `上次使用的地址 ${unavailable.join('、')} 当前不可用。请选择下方在线网卡；Tailscale 或 Radmin VPN 上线后会自动出现在列表中。` : '';
   const list = $('networks-list'); list.replaceChildren();
   for (const row of state.interfaces) {
     const label = node('label', undefined, 'network');
     const check = node('input'); check.type = 'checkbox'; check.value = row.address; check.checked = selected.has(row.address); check.disabled = busy || state.running;
     check.addEventListener('change', () => { check.checked ? selected.add(row.address) : selected.delete(row.address); $('start').disabled = busy || !selected.size; });
     const meta = node('span', undefined, 'meta'); meta.append(node('span', row.name), node('span', row.address, 'address'));
-    label.append(check, meta, node('span', row.kind === 'tailscale' ? 'Tailscale' : row.kind === 'virtual' ? '虚拟网卡' : '局域网', 'kind')); list.append(label);
+    label.append(check, meta, node('span', ({ tailscale: 'Tailscale', radmin: 'Radmin VPN', virtual: '虚拟网卡' })[row.kind] ?? '局域网', 'kind')); list.append(label);
   }
-  if (!state.interfaces.length) list.append(node('p', '没有可用地址。请连接 Wi-Fi，或等待 Tailscale 上线后刷新。', 'empty'));
+  if (!state.interfaces.length) list.append(node('p', '没有可用地址。请连接 Wi-Fi，或等待 Tailscale / Radmin VPN 上线后刷新。', 'empty'));
   $('start').hidden = state.running; $('start').disabled = busy || !selected.size;
   $('stop').hidden = !state.running; $('stop').disabled = busy;
   $('add').disabled = busy || !state.running;

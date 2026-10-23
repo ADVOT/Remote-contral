@@ -3,7 +3,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-test('offline saved Tailscale address cannot accompany the visible WLAN selection', async () => {
+for (const vpn of [
+  { address: '100.64.0.10', name: 'Tailscale', kind: 'tailscale' },
+  { address: '26.0.0.10', name: 'Radmin VPN', kind: 'radmin' },
+]) test(`offline saved ${vpn.name} address cannot accompany the visible WLAN selection`, async () => {
   class Element {
     constructor(tag = '') { this.tagName = tag; this.children = []; this.listeners = {}; this.hidden = false; }
     append(...children) { this.children.push(...children); }
@@ -15,7 +18,7 @@ test('offline saved Tailscale address cannot accompany the visible WLAN selectio
   const intervals = new Map(), actions = [];
   let state = {
     running: false, enabled: true, hostname: 'fixture', tls: false,
-    addresses: ['100.64.0.10'], interfaces: [{ address: '192.0.2.10', name: 'WLAN', kind: 'lan' }],
+    addresses: [vpn.address], interfaces: [{ address: '192.0.2.10', name: 'WLAN', kind: 'lan' }],
     urls: [], devices: [], accounts: [], pairing: null, error: '请选择当前可用的网络地址',
   };
   const context = {
@@ -48,8 +51,9 @@ test('offline saved Tailscale address cannot accompany the visible WLAN selectio
   await intervals.get(5000)();
   assert.equal(elements.get('start').disabled, true);
   // Bringing an address back does not silently select or expose it.
-  state = { ...state, interfaces: [{ address: '100.64.0.10', name: 'Tailscale', kind: 'tailscale' }] };
+  state = { ...state, interfaces: [vpn] };
   await intervals.get(5000)();
   assert.equal(elements.get('networks-list').children[0].children[0].checked, false);
+  assert.equal(elements.get('networks-list').children[0].children[2].textContent, vpn.name);
   assert.equal(elements.get('start').disabled, true);
 });

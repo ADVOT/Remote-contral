@@ -1,9 +1,9 @@
 {
   "name": "@local/dsh-connect",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
-  "description": "Paired browser access to the running DSH host over LAN or Tailscale",
+  "description": "Paired browser access to the running DSH host over LAN, Tailscale or Radmin VPN",
   "license": "MIT",
   "repository": { "type": "git", "url": "https://github.com/ADVOT/Remote-contral.git" },
   "exports": { ".": "./index.js", "./client": "./client.js", "./icon": "./icon.svg", "./package.json": "./package.json" },
