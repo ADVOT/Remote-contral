@@ -1,4 +1,4 @@
-# Remote-contral
+# Remote-control
 
 用于 **DeepSeek Harness（DSH）** 的远程连接插件。通过手机或另一台电脑的浏览器，访问本机 DSH 的会话、任务与审批；任务仍在运行 DSH 的电脑上执行。
 
